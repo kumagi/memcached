@@ -159,15 +159,15 @@ class DecrWithDefault(Action):
 class EngineTestAppDriver(Driver):
 
     def preSuite(self, seq):
-        print '#include "suite_stubs.h"'
-        print ""
+        print('#include "suite_stubs.h"')
+        print("")
 
     def testName(self, seq):
         return 'test_' + '_'.join(a.name for a in seq)
 
     def startSequence(self, seq):
         f = "static enum test_result %s" % self.testName(seq)
-        print ("%s(ENGINE_HANDLE *h,\n%sENGINE_HANDLE_V1 *h1) {"
+        print("%s(ENGINE_HANDLE *h,\n%sENGINE_HANDLE_V1 *h1) {"
                % (f, " " * (len(f) + 1)))
 
     def startAction(self, action):
@@ -179,33 +179,33 @@ class EngineTestAppDriver(Driver):
             s = '    del(h, h1);'
         else:
             s = '    %s(h, h1);' % (action.name)
-        print s
+        print(s)
 
     def postSuite(self, seq):
-        print """MEMCACHED_PUBLIC_API
+        print("""MEMCACHED_PUBLIC_API
 engine_test_t* get_tests(void) {
 
     static engine_test_t tests[]  = {
-"""
+""")
         for seq in sorted(seq):
-            print '        {"%s",\n         %s,\n         test_setup, teardown, NULL},' % (
+            print('        {"%s",\n         %s,\n         test_setup, teardown, NULL},' % (
                 ', '.join(a.name for a in seq),
-                self.testName(seq))
+                self.testName(seq)))
 
-        print """        {NULL, NULL, NULL, NULL, NULL}
+        print("""        {NULL, NULL, NULL, NULL, NULL}
     };
     return tests;
-}"""
+}""")
 
     def endSequence(self, seq, state):
         val = state.get(TESTKEY)
         if val:
-            print '    checkValue(h, h1, "%s");' % val
+            print('    checkValue(h, h1, "%s");' % val)
         else:
-            print '    assertNotExists(h, h1);'
-        print "    return SUCCESS;"
-        print "}"
-        print ""
+            print('    assertNotExists(h, h1);')
+        print("    return SUCCESS;")
+        print("}")
+        print("")
 
     def endAction(self, action, state, errored):
         value = state.get(TESTKEY)
@@ -215,9 +215,9 @@ engine_test_t* get_tests(void) {
             vs = ' // value is not defined'
 
         if errored:
-            print "    assertHasError();" + vs
+            print("    assertHasError();" + vs)
         else:
-            print "    assertHasNoError();" + vs
+            print("    assertHasNoError();" + vs)
 
 if __name__ == '__main__':
     breakdancer.runTest(breakdancer.findActions(globals().values()),

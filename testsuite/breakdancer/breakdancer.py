@@ -102,7 +102,7 @@ def runTest(actions, driver, duplicates=3, length=4):
                     haserror = not all(p(state) for p in a.postconditions)
                 except:
                     haserror = True
-            driver.endAction(a, state, haserror)
+                    driver.endAction(a, state, haserror)
         driver.endSequence(seq, state)
     driver.postSuite(tests)
 
