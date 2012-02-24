@@ -58,3 +58,6 @@ Makefile.in
 TAGS
 cscope.out
 tags
+GPATH
+GRTAGS
+GTAGS
