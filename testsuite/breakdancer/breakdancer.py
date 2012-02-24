@@ -90,7 +90,7 @@ def runTest(actions, driver, duplicates=3, length=4):
                                                   duplicates))
     tests = set(itertools.permutations(instances, length))
     driver.preSuite(tests)
-    for seq in sorted(tests):
+    for seq in sorted(tests, key=lambda a:str(a)):
         state = driver.newState()
         driver.startSequence(seq)
         for a in seq:
